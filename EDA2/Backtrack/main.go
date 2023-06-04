@@ -55,7 +55,7 @@ func assignWeights(symbolMatrix [][]string, weightMatrix [][]int, queue *[]Cell,
 
 			if isValidCell(rows, columns, new_x, new_y) && !visited[Cell{new_x, new_y}] {
 				if isBlockedCell(symbolMatrix, new_x, new_y) {
-					weightMatrix[new_x][new_y] = -11
+					weightMatrix[new_x][new_y] = -1
 					visited[Cell{new_x, new_y}] = true
 				}
 				if isBlankCell(symbolMatrix, new_x, new_y) {
@@ -226,4 +226,5 @@ func main() {
 		}
 	}
 }
+
 
