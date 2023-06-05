@@ -48,8 +48,8 @@ func findBestParking(symbolMatrix [][]string, x, y, rows, columns int) Cell {
 		new_x := x + move[0]
 		new_y := y + move[1]
 
-		if isValidCell(rows, columns, new_x, new_y) && !isBlockedCell(symbolMatrix, new_x, new_y) && !isParkingCell(symbolMatrix, new_x, new_y) && !isAirportCell(symbolMatrix, new_x, new_y) && isBlankCell(symbolMatrix, new_x, new_y) {
-			if weight := countBlankCells(symbolMatrix, new_x, new_y, rows, columns); weight < minWeight {
+		if isValidCell(rows, columns, new_x, new_y) && !isBlockedCell(symbolMatrix, new_x, new_y) && !isParkingCell(symbolMatrix, new_x, new_y) && !isAirportCell(symbolMatrix, new_x, new_y) && !isBlankCell(symbolMatrix, new_x, new_y) {
+			if weight := countParkingCells(symbolMatrix, new_x, new_y, rows, columns); weight < minWeight {
 				minWeight = weight
 				bestParking = Cell{new_x, new_y}
 			}
@@ -59,8 +59,9 @@ func findBestParking(symbolMatrix [][]string, x, y, rows, columns int) Cell {
 	return bestParking
 }
 
-// Cuenta el número de celdas en blanco alcanzables desde la celda dada
-func countBlankCells(symbolMatrix [][]string, x, y, rows, columns int) int {
+
+// Cuenta el número de parqueaderos alcanzables desde la celda dada
+func countParkingCells(symbolMatrix [][]string, x, y, rows, columns int) int {
 	count := 0
 	visited := make([][]bool, rows)
 	for i := range visited {
@@ -69,7 +70,7 @@ func countBlankCells(symbolMatrix [][]string, x, y, rows, columns int) int {
 
 	var dfs func(int, int)
 	dfs = func(x, y int) {
-		if !isValidCell(rows, columns, x, y) || visited[x][y] || isBlockedCell(symbolMatrix, x, y) || isParkingCell(symbolMatrix, x, y) || isAirportCell(symbolMatrix, x, y) {
+		if !isValidCell(rows, columns, x, y) || visited[x][y] || isBlockedCell(symbolMatrix, x, y) || isBlankCell(symbolMatrix, x, y) || isAirportCell(symbolMatrix, x, y) {
 			return
 		}
 
@@ -85,6 +86,7 @@ func countBlankCells(symbolMatrix [][]string, x, y, rows, columns int) int {
 	dfs(x, y)
 	return count
 }
+
 
 // Resuelve el problema de asignación de estacionamientos utilizando un enfoque greedy
 func solveProblem(symbolMatrix [][]string, events []int, rows, columns int) ([]string, bool) {
@@ -168,4 +170,3 @@ func main() {
 		}
 	}
 }
-
